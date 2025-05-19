@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #555;
+        }
+        pre {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .plot-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Financial Dashboard</h1>
+        
+        {% if stock_data %}
+        <h2>Stock Data for {{ ticker }}</h2>
+        <pre>{{ stock_data.to_html() | safe }}</pre>
+        {% else %}
+        <p>No stock data to display.</p>
+        {% endif %}
+
+        {% if plot_url %}
+        <h2>Stock Price Chart for {{ ticker }}</h2>
+        <div class="plot-container">
+            <img src="{{ plot_url }}" alt="Stock Price Chart">
+        </div>
+        {% endif %}
+
+        <form method="POST" action="/dashboard">
+            <label for="ticker">Enter Stock Ticker (e.g., AAPL):</label>
+            <input type="text" id="ticker" name="ticker" value="{{ request.form.ticker or 'AAPL' }}">
+            <input type="submit" value="Get Data">
+        </form>
+
+    </div>
+</body>
+</html>
