@@ -6,8 +6,16 @@ matplotlib.use('Agg')  # Use a non-interactive backend for Matplotlib
 import matplotlib.pyplot as plt
 import io
 import base64
+import os # Add this import
+from pymongo import MongoClient
 
 app = Flask(__name__)
+
+# MongoDB Connection Setup
+mongo_uri = os.environ.get('MONGO_URI', 'mongodb://localhost:27017/trading_bot_db') # Use environment variable
+client = MongoClient(mongo_uri)
+db = client['trading_bot_db'] # This can be part of the URI or specified here
+trades_collection = db['trades']
 
 @app.route('/')
 def hello_world():
